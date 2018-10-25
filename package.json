@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "author": "Lloyd Hilaiel (http://lloyd.io)",
   "engines": {
-    "node": ">= 9"
+    "node": ">= 8"
   },
   "repository": {
     "type": "git",
