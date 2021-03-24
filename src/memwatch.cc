@@ -20,7 +20,7 @@
 using namespace v8;
 using namespace node;
 
-Handle<Object> g_context;
+Local<Object> g_context;
 Nan::Callback *g_cb;
 
 struct Baton {
@@ -209,7 +209,7 @@ static void AsyncMemwatchAfter(uv_work_t* request) {
 
 static void noop_work_func(uv_work_t *) { }
 
-void memwatch::after_gc(GCType type, GCCallbackFlags flags)
+void memwatch::after_gc(Isolate *isolate, GCType type, GCCallbackFlags flags)
 {
     if (heapdiff::HeapDiff::InProgress()) return;
 
@@ -246,7 +246,7 @@ NAN_METHOD(memwatch::trigger_gc) {
     Nan::HandleScope scope;
     int deadline_in_ms = 500;
     if (info.Length() >= 1 && info[0]->IsNumber()) {
-    		deadline_in_ms = (int)(info[0]->Int32Value()); 
+        deadline_in_ms = (info[0]->Int32Value(Nan::GetCurrentContext())).ToChecked();
     }
 #if (NODE_MODULE_VERSION >= 0x002D)
     Nan::IdleNotification(deadline_in_ms);

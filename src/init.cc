@@ -9,7 +9,7 @@
 #include "memwatch.hh"
 
 extern "C" {
-    void init (v8::Handle<v8::Object> target)
+    void init (v8::Local<v8::Object> target)
     {
         Nan::HandleScope scope;
         heapdiff::HeapDiff::Initialize(target);
@@ -17,7 +17,7 @@ extern "C" {
         Nan::SetMethod(target, "upon_gc", memwatch::upon_gc);
         Nan::SetMethod(target, "gc", memwatch::trigger_gc);
 
-        v8::V8::AddGCEpilogueCallback(memwatch::after_gc);
+        Nan::AddGCEpilogueCallback(memwatch::after_gc);
     }
 
     NODE_MODULE(memwatch, init);
