@@ -1,14 +1,14 @@
 {
-  "name": "memwatch-next",
+  "name": "node-memwatch",
   "description": "Keep an eye on your memory usage, and discover and isolate leaks.",
-  "version": "0.3.0",
+  "version": "1.0.0",
   "author": "Lloyd Hilaiel (http://lloyd.io)",
   "engines": {
-    "node": ">= 0.8.0"
+    "node": ">= 8"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/marcominetti/node-memwatch.git"
+    "url": "https://github.com/eduardbcom/node-memwatch.git"
   },
   "main": "include.js",
   "licenses": [
@@ -17,7 +17,7 @@
     }
   ],
   "bugs": {
-    "url": "https://github.com/marcominetti/node-memwatch/issues"
+    "url": "https://github.com/eduardbcom/node-memwatch/issues"
   },
   "scripts": {
     "install": "node-gyp rebuild",
@@ -30,7 +30,8 @@
   "contributors": [
     "Jed Parsons (@jedp)",
     "Jeff Haynie (@jhaynie)",
-    "Justin Matthews (@jmatthewsr-ms)"
+    "Justin Matthews (@jmatthewsr-ms)",
+    "Eduard Bondarenko (@eduardbcom)"
   ],
   "dependencies": {
     "bindings": "^1.2.1",

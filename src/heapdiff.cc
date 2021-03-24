@@ -90,9 +90,12 @@ NAN_METHOD(heapdiff::HeapDiff::New)
     info.GetReturnValue().Set(info.This());
 }
 
-static string handleToStr(const Handle<Value> & str)
+static string handleToStr(const Local<Value> & str)
 {
-	String::Utf8Value utfString(str->ToString());
+    v8::Isolate* isolate = v8::Isolate::GetCurrent();
+
+	String::Utf8Value utfString(isolate, str->ToString());
+
 	return *utfString;
 }
 

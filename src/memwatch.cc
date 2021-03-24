@@ -125,7 +125,9 @@ static void AsyncMemwatchAfter(uv_work_t* request) {
                 // the type of event to emit
                 argv[1] = Nan::New("leak").ToLocalChecked();
                 argv[2] = getLeakReport(b->heapUsage);
-                g_cb->Call(3, argv);
+
+                Nan::AsyncResource async("nan:Callback:Call");
+                g_cb->Call(3, argv, &async);
             }
         } else {
             s_stats.consecutive_growth = 0;
@@ -200,7 +202,9 @@ static void AsyncMemwatchAfter(uv_work_t* request) {
             // the type of event to emit
             argv[1] = Nan::New("stats").ToLocalChecked();
             argv[2] = stats;
-            g_cb->Call(3, argv);
+
+            Nan::AsyncResource async("nan:Callback:Call");
+            g_cb->Call(3, argv, &async);
         }
     }
 
@@ -209,7 +213,7 @@ static void AsyncMemwatchAfter(uv_work_t* request) {
 
 static void noop_work_func(uv_work_t *) { }
 
-void memwatch::after_gc(GCType type, GCCallbackFlags flags)
+void memwatch::after_gc(Isolate* isolate, GCType type, GCCallbackFlags flags)
 {
     if (heapdiff::HeapDiff::InProgress()) return;
 
@@ -246,7 +250,7 @@ NAN_METHOD(memwatch::trigger_gc) {
     Nan::HandleScope scope;
     int deadline_in_ms = 500;
     if (info.Length() >= 1 && info[0]->IsNumber()) {
-    		deadline_in_ms = (int)(info[0]->Int32Value()); 
+    		deadline_in_ms = (int)(info[0]->Int32Value());
     }
 #if (NODE_MODULE_VERSION >= 0x002D)
     Nan::IdleNotification(deadline_in_ms);
